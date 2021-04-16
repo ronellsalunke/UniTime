@@ -3,6 +3,9 @@ package ronell.timetable
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,7 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +21,7 @@ import ronell.timetable.ui.theme.UniTimeTheme
 
 
 class MainActivity : AppCompatActivity() {
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -31,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun UniTime() {
     Scaffold(
@@ -50,6 +55,7 @@ fun UniTime() {
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun BodyContent(modifier: Modifier) {
 
@@ -67,9 +73,12 @@ fun BodyContent(modifier: Modifier) {
                 shape = RoundedCornerShape(10.dp),
                 backgroundColor = MaterialTheme.colors.secondary,
             ) {
+                var expand by remember { mutableStateOf(false) }
                 Column(
                     modifier = Modifier
+                        .clickable { expand = !expand }
                         .padding(8.dp)
+
                 ) {
                     Text(
                         text = subject[it],
@@ -81,6 +90,13 @@ fun BodyContent(modifier: Modifier) {
                         Modifier.padding(4.dp),
                         style = MaterialTheme.typography.body1
                     )
+                    AnimatedVisibility(expand) {
+                        Text(
+                            text = topics[it],
+                            Modifier.padding(4.dp),
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
 
                 }
 
@@ -97,8 +113,13 @@ val subject = listOf(
 val timeslot = listOf(
     "12 Apr, 10:00 AM", "13 Apr, 11:00 AM", "15 Apr, 12:00 PM"
 )
+val topics = listOf(
+    "First Order Logic, Forward and Backward Chaining",
+    "Working with Cookies, Non-Blocking I/O",
+    "Introduction to 8085"
+)
 
-
+@ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
