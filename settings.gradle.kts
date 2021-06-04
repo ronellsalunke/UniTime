@@ -6,4 +6,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "UniTime"
-include ':app'
+include(":app")
