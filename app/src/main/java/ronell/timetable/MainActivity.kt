@@ -5,11 +5,13 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,6 +23,7 @@ import ronell.timetable.ui.theme.UniTimeTheme
 
 
 class MainActivity : AppCompatActivity() {
+    @ExperimentalFoundationApi
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun UniTime() {
@@ -55,11 +59,13 @@ fun UniTime() {
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun BodyContent(modifier: Modifier) {
 
-    LazyColumn(
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(2),
         state = rememberLazyListState(),
         modifier = modifier
             .padding(4.dp)
@@ -119,6 +125,7 @@ val topics = listOf(
     "Introduction to 8085"
 )
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
