@@ -3,34 +3,29 @@ package ronell.timetable
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ronell.timetable.data.UniDataObj
 import ronell.timetable.ui.theme.UniTimeTheme
 
 
 class MainActivity : AppCompatActivity() {
-    @ExperimentalFoundationApi
-    @ExperimentalAnimationApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             UniTimeTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
+                Surface {
                     UniTime()
                 }
             }
@@ -38,8 +33,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
 @Composable
 fun UniTime() {
     Scaffold(
@@ -50,83 +43,65 @@ fun UniTime() {
                 }
             )
         }
-    ) { innerPadding ->
-        BodyContent(
-            Modifier
-                .padding(innerPadding)
-                .padding(4.dp)
-        )
-    }
-}
-
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
-@Composable
-fun BodyContent(modifier: Modifier) {
-
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        state = rememberLazyListState(),
-        modifier = modifier
-            .padding(4.dp)
     ) {
-
-        items(subject.size) {
-            Card(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp),
-                backgroundColor = MaterialTheme.colors.secondary,
-            ) {
-                var expand by remember { mutableStateOf(false) }
-                Column(
-                    modifier = Modifier
-                        .clickable { expand = !expand }
-                        .padding(8.dp)
-
-                ) {
-                    Text(
-                        text = subject[it],
-                        Modifier.padding(4.dp),
-                        style = MaterialTheme.typography.h6
-                    )
-                    Text(
-                        text = timeslot[it],
-                        Modifier.padding(4.dp),
-                        style = MaterialTheme.typography.body1
-                    )
-                    AnimatedVisibility(expand) {
-                        Text(
-                            text = topics[it],
-                            Modifier.padding(4.dp),
-                            style = MaterialTheme.typography.body2
-                        )
-                    }
-
-                }
-
-            }
-        }
-
+        DataCard()
     }
 }
 
 
-val subject = listOf(
-    "Artificial Intelligence", "Enterprise Java", "Microprocessor Architecture"
-)
-val timeslot = listOf(
-    "12 Apr, 10:00 AM", "13 Apr, 11:00 AM", "15 Apr, 12:00 PM"
-)
-val topics = listOf(
-    "First Order Logic, Forward and Backward Chaining",
-    "Working with Cookies, Non-Blocking I/O",
-    "Introduction to 8085"
-)
+@Composable
+fun OverviewCard(
+    subject: String,
+    timeslot: String,
+    topics: String,
+) {
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
 
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
+        ) {
+        Column(
+            modifier = Modifier.padding(10.dp)
+
+        ) {
+            Text(
+                text = subject,
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.padding(4.dp)
+            )
+            Text(
+                text = timeslot,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(4.dp)
+            )
+            Text(
+                text = topics,
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.padding(4.dp)
+            )
+        }
+    }
+
+}
+
+@Composable
+fun DataCard() {
+    val data = UniDataObj.uniData
+    LazyColumn(
+        modifier = Modifier.padding(8.dp)
+    ) {
+        items(data) {
+            OverviewCard(
+                subject = it.subject,
+                timeslot = it.timeslot,
+                topics = it.topics
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
