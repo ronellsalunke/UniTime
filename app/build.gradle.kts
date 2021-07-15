@@ -32,7 +32,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-        useIR = true
     }
     buildFeatures {
         compose = true
@@ -55,4 +54,8 @@ dependencies {
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.14.0")
+    implementation("com.google.accompanist:accompanist-insets:0.14.0")
+    implementation("com.google.accompanist:accompanist-insets-ui:0.14.0")
 }
